@@ -1,5 +1,5 @@
 import _       from 'lodash';
-import jsonify from './jsonify';
+import jsonify from './jsonify/jsonify';
 
 let objRx = /^\{/;
 let commaRx = /\s*,\s*/g;

@@ -2,10 +2,13 @@
   "name": "jquery.behaviorize",
   "version": "0.0.1",
   "description": "A framework for extending html elements with new behaviors",
-  "main": "src/behaviorize.js",
+  "main": "dist/behaviorize.js",
+  "jsnext:main": "dist/behaviorize.es.js",
   "scripts": {
     "deps": "node ./nightwatch-deps",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir build",
+    "dist": "rollup -c && uglifyjs ./dist/behaviorize.js --mangle --compress -o ./dist/behaviorize.min.js",
+    "test": "nightwatch -e unit"
   },
   "repository": {
     "type": "git",
@@ -34,6 +37,11 @@
     "nightwatch": "^0.9.14",
     "rollup": "^0.41.6",
     "rollup-plugin-buble": "^0.15.0",
-    "selenium-download": "^2.0.9"
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1",
+    "rollup-watch": "^3.2.2",
+    "selenium-download": "^2.0.9",
+    "uglifyjs": "^2.4.10"
   }
 }

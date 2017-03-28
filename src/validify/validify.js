@@ -1,28 +1,31 @@
 import _                  from 'lodash';
 import configsTransformer from '../lib/configs-transformer';
 import id_                from '../lib/id';
+import dependenciesGetter from './lib/dependencies-getter';
 import eventAssessor      from './lib/event-assessor';
 import varToName          from './lib/var-to-name';
 
 import {validatorConfigs, validators as validators_} from '../lib/vars/vars';
 import {$eventBus, dependenciesTable, validationTable} from './lib/vars';
 
-export default $element => {
-  let validators = $element.attrValues(_validationPfx);
+export default ($element, prefix) => {
+  let validators = $element.attrValues(prefix);
+  
   if(_.isEmpty(validators)) { 
     return;
   }
+  
   let event = eventAssessor($element);
   let {selectors, classes, validateAll, validateOnStart} = validatorConfigs;
   let id = $element.id() || $element.id(id_());
-  let elementHandle = `${_validationPfx}${id}`;
+  let elementHandle = `${prefix}${id}`;
   let elementValidators = [];
   let $mainContainer = $element.closest(selectors.mainContainer || 'form');
   let containerId = $mainContainer.id() || $mainContainer.id(id_());
-  let elementChangeHandle = `${_validationPfx}${containerId}`;
-  let specificFieldClass = `${_validationPfx}field-${id}`;
-  let depConfigs = configsTransformer(validators[`${_validationPfx}deps`]);
-  let $deps = $(_.isObject(depConfigs) ? depConfigs.selector : depConfigs, $mainContainer).not($element);
+  let elementChangeHandle = `${prefix}${containerId}`;
+  let specificFieldClass = `${prefix}field-${id}`;
+  let depConfigs = configsTransformer(validators[`${prefix}deps`]);
+  let $deps = dependenciesGetter(depConfigs, $element, $mainContainer);
   let dependencyNames = [];
   
   let executor = _.debounce(() => {
@@ -68,7 +71,7 @@ export default $element => {
     
     dependencyNames.push(varToName(name));
     
-    let dependencyHandle = `${_validationPfx}${$dependency.id() || $dependency.id(id_())}`;
+    let dependencyHandle = `${prefix}${$dependency.id() || $dependency.id(id_())}`;
     let table = dependenciesTable[containerId];
     
     if(!table) {
@@ -103,14 +106,14 @@ export default $element => {
   });
   
   _.each(validators, (configs, validator) => {
-    validator = validator.replace(_validationPfx, '');
+    validator = validator.replace(prefix, '');
     validationsTable[validator] = false;
     configs = configsTransformer(configs);
     let depValidator = validator === 'deps';
     let silent = false;
     let disable = false;
     let name = varToName($element.attr('name'));
-    let specificErrorClass = `${_validationPfx}error-${validator}`;
+    let specificErrorClass = `${prefix}error-${validator}`;
     let definition = validators_[validator];
     let messageParams = {$element, configs, name, $deps, dependencyNames};
     

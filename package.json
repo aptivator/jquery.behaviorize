@@ -1,0 +1,36 @@
+{
+  "name": "jquery.behaviorize",
+  "version": "0.0.1",
+  "description": "A framework for extending html elements with new behaviors",
+  "main": "src/behaviorize.js",
+  "scripts": {
+    "deps": "node ./nightwatch-deps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aptivator/jquery.behaviorize.git"
+  },
+  "keywords": [
+    "jquery",
+    "directives",
+    "behaviorize",
+    "front-end"
+  ],
+  "author": "Dmitriy A. Nesterkin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aptivator/jquery.behaviorize/issues"
+  },
+  "homepage": "https://github.com/aptivator/jquery.behaviorize#readme",
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "buble": "^0.15.2",
+    "nightwatch": "^0.9.14",
+    "rollup": "^0.41.6",
+    "rollup-plugin-buble": "^0.15.0",
+    "selenium-download": "^2.0.9"
+  }
+}

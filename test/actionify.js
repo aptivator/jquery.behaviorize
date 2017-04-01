@@ -8,7 +8,6 @@ let extrasPath = path.resolve(__dirname, '../node_modules/jquery.extras/dist/ext
 let lodashPath = path.resolve(__dirname, '../node_modules/lodash/lodash.js');
 let behaviorizePath = path.resolve(__dirname, '../dist/behaviorize.js');
 
-let window_;
 let $;
 
 describe('jquery.behaviorize :: actionify', function() {
@@ -27,8 +26,7 @@ describe('jquery.behaviorize :: actionify', function() {
           console.error(err);
         }
         
-        window_ = window;
-        ({$} = window_);
+        ({$} = window);
         
         done();
       }
@@ -40,9 +38,7 @@ describe('jquery.behaviorize :: actionify', function() {
       let configs = {
         prefix: '_',
         actions: {
-          invoke(p) {
-
-          }
+          invoke(p) {}
         }
       };
       
@@ -90,10 +86,7 @@ describe('jquery.behaviorize :: actionify', function() {
       let configs = $.behaviorize({
         actions: {
           triggerer: {
-            action(p) {
-              
-            },
-            
+            action(p) {},
             events: ['keyup', 'click']
           }
         }

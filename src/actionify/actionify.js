@@ -5,9 +5,6 @@ import {actions}          from '../lib/vars/vars';
 export default ($el, pfx) => {
   _.each($el.attrValues(pfx), (configs, actionName) => {
     actionName = actionName.replace(pfx, '');
-    configs = configsTransformer(configs);
-    
-    let params = {$el, configs};
     let {[actionName]: actionRecord} = actions;
     
     if(!actionRecord) {
@@ -18,7 +15,10 @@ export default ($el, pfx) => {
       actionRecord = {init: actionRecord};
     }
     
+    configs = configsTransformer(configs);
+    
     let {init, action} = actionRecord;
+    let params = {$el, configs};
     
     if(init) {
       actionRecord.init(params);

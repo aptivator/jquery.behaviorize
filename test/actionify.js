@@ -82,22 +82,20 @@ describe('jquery.behaviorize :: actionify', function() {
     
     it('assigns an event handler to be invoked multiple times', done => {
       $('input:last').attr('_a-triggerer', '');
-      
-      let configs = $.behaviorize({
+
+      $('body').behaviorize({
         actions: {
           triggerer: {
             action(p) {},
             events: ['keyup', 'click']
           }
-        }
+        }        
       });
       
+      let configs = $.behaviorize();
       let triggererSpy = sinon.spy(configs.actions.triggerer, 'action');
       
-      $('body').behaviorize();
-      $('input:last').trigger('keyup');
-      $('input:last').trigger('keyup');
-      $('input:last').trigger('click');
+      $('input:last').trigger('keyup').trigger('keyup').trigger('click');
       setTimeout(() => {
         expect(triggererSpy.callCount).to.equal(3);
         done();

@@ -1,6 +1,5 @@
 import _                  from 'lodash';
 import configsTransformer from '../lib/configs-transformer';
-import id_                from '../lib/id';
 import dependenciesGetter from './lib/dependencies-getter';
 import eventAssessor      from './lib/event-assessor';
 import varToName          from './lib/var-to-name';
@@ -17,11 +16,11 @@ export default ($element, prefix) => {
   
   let event = eventAssessor($element);
   let {selectors, classes, validateAll, validateOnStart} = validatorConfigs;
-  let id = $element.id() || $element.id(id_());
+  let id = $element.id() || $element.id(true);
   let elementHandle = `${prefix}${id}`;
   let elementValidators = [];
   let $mainContainer = $element.closest(selectors.mainContainer || 'form');
-  let containerId = $mainContainer.id() || $mainContainer.id(id_());
+  let containerId = $mainContainer.id() || $mainContainer.id(true);
   let elementChangeHandle = `${prefix}${containerId}`;
   let specificFieldClass = `${prefix}field-${id}`;
   let depConfigs = configsTransformer(validators[`${prefix}deps`]);
@@ -71,7 +70,7 @@ export default ($element, prefix) => {
     
     dependencyNames.push(varToName(name));
     
-    let dependencyHandle = `${prefix}${$dependency.id() || $dependency.id(id_())}`;
+    let dependencyHandle = `${prefix}${$dependency.id() || $dependency.id(true)}`;
     let table = dependenciesTable[containerId];
     
     if(!table) {

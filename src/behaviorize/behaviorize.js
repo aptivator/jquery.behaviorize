@@ -5,9 +5,12 @@ import * as vars from '../lib/vars/vars';
 $.behaviorize = configs => {
   _.each(configs, (configs, configName) => {
     if(!_.isPlainObject(configs)) {
-      configs = {[configName]: configs};
+      let configs_ = configs;
+      configs = {[configName]: configs_};
     }
     
     _.extend(vars[configName], configs);
   });
+  
+  return vars;
 };

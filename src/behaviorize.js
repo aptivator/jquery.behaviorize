@@ -1,21 +1,18 @@
-import './helpers/helpers';
-import './config/config';
-
+import                'jquery.extras';
 import $         from 'jquery';
+import                './behaviorize/behaviorize';
 import actionify from './actionify/actionify';
-import transform from './transform/transform';
-import validify  from './validify/validify';
+//import validify  from './validify/validify';
 import {prefix}  from './lib/vars/vars';
 
 $.fn.behaviorize = function($set = $()) {
   let {prefix: pfx} = prefix;
   this.each((idx, element) => {
-    $('*', element).byAttr(pfx).each((idx, element) => {
+    $('*', element).byAttrName(pfx).each((idx, element) => {
       let $element = $(element);
       $set = $set.add($element);
-      transform($element, `${pfx}t`);
-      actionify($element, `${pfx}a`);
-      validify($element, `${pfx}v`);
+      actionify($element, `${pfx}a-`);
+      //validify($element, `${pfx}v`);
     });
   });
   

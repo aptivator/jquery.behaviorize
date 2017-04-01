@@ -1,7 +1,4 @@
 import buble    from 'rollup-plugin-buble';
-import commonjs from 'rollup-plugin-commonjs';
-import resolve  from 'rollup-plugin-node-resolve';
-
 let packageJson = require('./package.json');
 let {'jsnext:main': jsnext, main} = packageJson;
 
@@ -19,18 +16,8 @@ export default {
     jquery: '$',
     lodash: '_'
   },
-  external: ['jquery', 'lodash'],
+  external: ['jquery', 'lodash', 'jquery.extras'],
   plugins: [
-    resolve({
-      jsnext: true,
-      main: true,
-      browser: true
-    }),
-    commonjs(),
-    buble({
-      transforms: {
-        dangerousForOf: true
-      }
-    })
+    buble()
   ]
 };

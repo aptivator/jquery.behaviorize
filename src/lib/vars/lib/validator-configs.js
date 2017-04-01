@@ -1,14 +1,14 @@
 import _ from 'lodash';
 
-let baseDefaults = {'default': '', error: ''};
+let classDefaults = {'default': '', error: ''};
 
 const validatorConfigs = {
   classes: {
-    mainContainer: _.clone(baseDefaults),
-    elementContainer: _.clone(baseDefaults),
-    element: _.clone(baseDefaults),
-    errorContainer: _.clone(baseDefaults),
-    errorMessage: _.clone(baseDefaults)
+    mainContainer: _.clone(classDefaults),
+    elementContainer: _.clone(classDefaults),
+    element: _.clone(classDefaults),
+    errorContainer: _.clone(classDefaults),
+    errorMessage: _.clone(classDefaults)
   },
   
   selectors: {

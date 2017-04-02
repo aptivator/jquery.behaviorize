@@ -2,29 +2,30 @@ import _                  from 'lodash';
 import configsTransformer from '../lib/configs-transformer';
 import dependenciesGetter from './lib/dependencies-getter';
 import eventAssessor      from './lib/event-assessor';
+import isForm             from './lib/is-form';
 import varToName          from './lib/var-to-name';
 
-import {validatorConfigs, validators as validators_} from '../lib/vars/vars';
+import {validifyConfigs, validators} from '../lib/vars/vars';
 import {$eventBus, dependenciesTable, validationTable} from './lib/vars';
 
-export default ($element, prefix) => {
-  let validators = $element.attrValues(prefix);
+export default ($el, pfx) => {
+  let validatorConfigs = $el.attrValues(pfx);
   
-  if(_.isEmpty(validators)) { 
+  if(_.isEmpty(validatorConfigs)) {
     return;
   }
   
-  let event = eventAssessor($element);
-  let {selectors, classes, validateAll, validateOnStart} = validatorConfigs;
-  let id = $element.id() || $element.id(true);
-  let elementHandle = `${prefix}${id}`;
+  let {selectors, classes, validateAll, validateOnStart} = validifyConfigs;
+  let {mainContainer$, elementContainer$, errorSibling$} = selectors;
+  let id = $el.id(true);
+  let elementHandle = `${pfx}${id}`;
   let elementValidators = [];
-  let $mainContainer = $element.closest(selectors.mainContainer || 'form');
-  let containerId = $mainContainer.id() || $mainContainer.id(true);
-  let elementChangeHandle = `${prefix}${containerId}`;
-  let specificFieldClass = `${prefix}field-${id}`;
-  let depConfigs = configsTransformer(validators[`${prefix}deps`]);
-  let $deps = dependenciesGetter(depConfigs, $element, $mainContainer);
+  let $mainEl = $el.closest(mainContainer$ || 'form');
+  let containerId = $mainEl.id(true);
+  let containerHandle = `${pfx}${containerId}`;
+  let specificFieldClass = `${pfx}field-${id}`;
+  let depConfigs = configsTransformer(validatorConfigs[`${pfx}deps`]);
+  let $deps = dependenciesGetter(depConfigs, $el, $mainEl);
   let dependencyNames = [];
   
   let executor = _.debounce(() => {
@@ -38,10 +39,10 @@ export default ($element, prefix) => {
       }
     }
     $eventBus.trigger(elementHandle);
-    $eventBus.trigger(elementChangeHandle, [id, valid]);
-  }, 0);
+    $eventBus.trigger(containerHandle, [id, valid]);
+  });
   
-  $element.addClass(classes.element.error).addClass(specificFieldClass);
+  $el.addClass(classes.element.error).addClass(specificFieldClass);
   
   if(!validationTable[containerId]) {
     validationTable[containerId] = {};
@@ -49,125 +50,172 @@ export default ($element, prefix) => {
   
   validationTable[containerId][id] = false;
   
-  if(!$eventBus.hasEvent(elementChangeHandle)) {
-    $eventBus.on(elementChangeHandle, (evt, id, valid) => {
+  if(!$eventBus.hasEvent(containerHandle)) {
+    $eventBus.on(containerHandle, (evt, id, valid) => {
       validationTable[containerId][id] = valid;
       let numberValid = _.reduce(validationTable[containerId], (sum, valid) => sum += valid);
       let totalInputs = _.keys(validationTable[containerId]).length;
       if(numberValid === totalInputs) {
-        return $mainContainer.addClass(classes.mainContainer.default).removeClass(classes.mainContainer.error);
+        $mainEl.addClass(classes.mainContainer.default);
+        return $mainEl.removeClass(classes.mainContainer.error);
       }
-      $mainContainer.addClass(classes.mainContainer.error).removeClass(classes.mainContainer.default);
+      
+      $mainEl.addClass(classes.mainContainer.error);
+      $mainEl.removeClass(classes.mainContainer.default);
     });
   }
   
-  $deps.each((idx, dependency) => {
-    let $dependency = $(dependency);
-    let name = $dependency.attr('name');
-    if(!name) { 
+  $deps.each(function() {
+    let $dependency = $(this);
+    let name = $dependency.name();
+    
+    if(!name) {
       throw new Error(`one of the dependencies does not have a name`);
     }
     
     dependencyNames.push(varToName(name));
     
-    let dependencyHandle = `${prefix}${$dependency.id() || $dependency.id(true)}`;
+    let dependencyId = $dependency.id(true);
+    let dependencyHandle = `${pfx}${dependencyId}`;
     let table = dependenciesTable[containerId];
     
     if(!table) {
       table = dependenciesTable[containerId] = [];
     }
     
-    if(table[id] && table.includes($dependency.id())) {
-      throw new Error(`dependencies [${id}] and [${$dependency.id()}] depend on each other`);
+    if(table[id] && table.includes(dependencyId)) {
+      throw new Error(`[${id}] and [${dependencyId}] depend on each other`);
     }
+    
     table.push(id);
     $eventBus.on(dependencyHandle, executor);
   });
   
-  let $errorSibling = selectors.errorSibling ? $element.closest(selectors.errorSibling) : $element;
-  let $elementContainer = selectors.elementContainer ? $element.closest(selectors.elementContainer) : null;
-  let $errorContainer = $('<div/>').addClass(classes.errorContainer.error).addClass(specificFieldClass);
+  let $errorSibling = errorSibling$ ? $el.closest(errorSibling$) : $el;
+  let $elContainer = elementContainer$ ? $el.closest(elementContainer$) : null;
   let elementValidationChangeHandle = `${elementHandle}-validation-change`;
+  let totalValidators = _.keys(validatorConfigs).length;
   let validationsTable = {};
-  let totalValidators = _.keys(validators).length;
+  let $errorContainer = $('<div/>');
   
-  $elementContainer && $elementContainer.addClass(specificFieldClass).addClass(classes.elementContainer.error);
+  $errorContainer.addClass(classes.errorContainer.error);
+  $errorContainer.addClass(specificFieldClass);
   
-  $eventBus.on(elementValidationChangeHandle, (evt, validator, valid) => {
-    validationsTable[validator] = valid;
+  if($elContainer) {
+    $elContainer.addClass(specificFieldClass);
+    $elContainer.addClass(classes.elementContainer.error);
+  }
+  
+  $eventBus.on(elementValidationChangeHandle, (evt, validatorName, valid) => {
+    validationsTable[validatorName] = valid;
     let numberValid = _.reduce(validationsTable, (sum, valid) => sum += valid);
     if(numberValid === totalValidators) {
-      $elementContainer && $elementContainer.removeClass(classes.elementContainer.error).addClass(classes.elementContainer.default);
-      return $errorContainer.removeClass(classes.errorContainer.error).addClass(classes.errorContainer.default);
+      if($elContainer) {
+        $elContainer.removeClass(classes.elementContainer.error);
+        $elContainer.addClass(classes.elementContainer.default);
+      }
+      
+      $errorContainer.removeClass(classes.errorContainer.error);
+      return $errorContainer.addClass(classes.errorContainer.default);
     }
-    $elementContainer && $elementContainer.addClass(classes.elementContainer.error).removeClass(classes.elementContainer.default);
-    $errorContainer.addClass(classes.errorContainer.error).removeClass(classes.errorContainer.default);
+    
+    if($elContainer) {
+      $elContainer.addClass(classes.elementContainer.error);
+      $elContainer.removeClass(classes.elementContainer.default);
+    }
+    
+    $errorContainer.addClass(classes.errorContainer.error);
+    $errorContainer.removeClass(classes.errorContainer.default);
   });
   
-  _.each(validators, (configs, validator) => {
-    validator = validator.replace(prefix, '');
-    validationsTable[validator] = false;
+  _.each(validatorConfigs, (configs, validatorName) => {
+    validatorName = validatorName.replace(pfx, '');
+    validationsTable[validatorName] = false;
     configs = configsTransformer(configs);
-    let depValidator = validator === 'deps';
-    let silent = false;
-    let disable = false;
-    let name = varToName($element.attr('name'));
-    let specificErrorClass = `${prefix}error-${validator}`;
-    let definition = validators_[validator];
-    let messageParams = {$element, configs, name, $deps, dependencyNames};
+    let depValidator = validatorName === 'deps';
+    let {silent, disable} = _.isPlainObject(configs) ? configs : {};
+    let name = varToName($el.name());
+    let specificErrorClass = `${pfx}error-${validatorName}`;
+    let definition = validators[validatorName];
+    let notifierParams = {$el, configs, name, $deps, dependencyNames};
     
     if(!definition) {
-      throw new Error(`validator [${validator}] was not defined`);
+      throw new Error(`validator [${validatorName}] was not defined`);
     }
     
-    if(_.isObject(configs)) {
-      silent = configs.silent;
-      disable = configs.disable;
-    }
-    
-    let errorMessage = !silent && definition.message && definition.message(messageParams) || '';
+    let {notifier = _.noop, validator} = definition;
+    let errorMessage = !silent && notifier(notifierParams);
     
     if(errorMessage) {
-      var $errorMessage = $('<div/>').text(errorMessage).addClass(classes.errorMessage.error)
-        .addClass(specificErrorClass).appendTo($errorContainer);
+      var $errorMessage = $('<div/>');
+      
+      $errorMessage
+        .text(errorMessage)
+        .addClass(classes.errorMessage.error)
+        .addClass(specificErrorClass)
+        .appendTo($errorContainer);
     }
     
-    let validatorMethod = evt => {
-      let op = 'addClass';
-      let dependencyValues = {};
-      $deps.each((idx, dependency) => {
-        let $dependency = $(dependency);
-        dependencyValues[$dependency.attr('name')] = $dependency.val();
-      });
+    let elementValidator = evt => {
+      let classOp = 'addClass';
+      let dependencyValues = $deps.val('name', true);
       
-      let result = definition.validator({
-        $element, name, configs, $deps, value: $element.val(),
-        dependencyNames, dependencyValues, validationConfigs: validatorConfigs
+      let result = validator({
+        $el, name, configs, $deps, value: $el.val(),
+        dependencyNames, dependencyValues, validifyConfigs
       });
       
       if(!result) {
-        depValidator && disable && $element.disable();
-        $errorMessage && $errorMessage.removeClass(classes.errorMessage.default).addClass(classes.errorMessage.error);
-        $element.removeClass(classes.element.default).addClass(classes.element.error);
+        if(depValidator && disable) {
+          $el.disable();
+        }
+        
+        if(errorMessage) {
+          $errorMessage.removeClass(classes.errorMessage.default);
+          $errorMessage.addClass(classes.errorMessage.error);
+        }
+        
+        $el.removeClass(classes.element.default);
+        $el.addClass(classes.element.error);
       } else {
-        op = 'removeClass';
-        depValidator && disable && $element.enable();
-        $errorMessage && $errorMessage.removeClass(classes.errorMessage.error).addClass(classes.errorMessage.default);
-        $element.removeClass(classes.element.error).addClass(classes.element.default);
+        classOp = 'removeClass';
+        
+        if(depValidator && disable) {
+          $el.enable();
+        }
+        
+        if(errorMessage) {
+          $errorMessage.removeClass(classes.errorMessage.error);
+          $errorMessage.addClass(classes.errorMessage.default);
+        }
+        
+        $el.removeClass(classes.element.error);
+        $el.addClass(classes.element.default);
       }
       
-      $element[op](specificErrorClass);
-      $errorContainer.size() && $errorContainer[op](specificErrorClass);
-      $errorMessage && $errorMessage[op](specificErrorClass);
-      $elementContainer && $elementContainer[op](specificErrorClass);
-      $eventBus.trigger(elementValidationChangeHandle, [validator, result]);
+      $el[classOp](specificErrorClass);
+      
+      if($errorContainer.length) {
+        $errorContainer[classOp](specificErrorClass);
+      }
+      
+      if(errorMessage) {
+        $errorMessage[classOp](specificErrorClass);
+      }
+
+      if($elContainer) {
+        $elContainer[classOp](specificErrorClass);
+      }
+      
+      $eventBus.trigger(elementValidationChangeHandle, [validatorName, result]);
+      
       return result;
     };
     
-    elementValidators.push(validatorMethod);
+    elementValidators.push(elementValidator);
   });
   
-  $element.on(event, executor);
+  $el.on(eventAssessor($el), executor);
   
   if($errorContainer.length) {
     $errorContainer.insertAfter($errorSibling);
@@ -177,7 +225,7 @@ export default ($element, prefix) => {
     executor();
   }
   
-  if($mainContainer[0].tagName === 'FORM') {
-    $mainContainer.on('reset', executor);
+  if(isForm($mainEl)) {
+    $mainEl.on('reset', executor);
   }
 };

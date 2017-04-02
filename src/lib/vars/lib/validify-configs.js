@@ -12,9 +12,9 @@ const validatorConfigs = {
   },
   
   selectors: {
-    mainContainer: '',
-    elementContainer: '',
-    errorSibling: ''
+    mainContainer$: '',
+    elementContainer$: '',
+    errorSibling$: ''
   },
   
   validateOnStart: true,

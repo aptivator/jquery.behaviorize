@@ -5,7 +5,8 @@ const validators = {
       let {error} = validationConfigs.classes.element;
       return !$deps.hasClass(error);
     },
-    message(p) {
+    
+    notifier(p) {
       return `${p.name} depends on ${p.dependencyNames.join(', ')}`;
     }
   }

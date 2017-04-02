@@ -1,5 +1,5 @@
-import validatorConfigs from './lib/validator-configs';
-import validators       from './lib/validators';
+import validifyConfigs from './lib/validify-configs';
+import validators      from './lib/validators';
 
 const actions = {};
 const prefix = {prefix: '$'};
@@ -9,6 +9,6 @@ export {
   actions,
   prefix,
   transforms,
-  validatorConfigs,
+  validifyConfigs,
   validators
 };

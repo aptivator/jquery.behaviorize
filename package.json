@@ -29,7 +29,7 @@
   "homepage": "https://github.com/aptivator/jquery.behaviorize#readme",
   "dependencies": {
     "jquery": "^3.2.1",
-    "jquery.extras": "^1.0.1",
+    "jquery.extras": "^1.0.7",
     "lodash": "^4.17.4"
   },
   "devDependencies": {

@@ -18,6 +18,10 @@ export default {
   },
   external: ['jquery', 'lodash', 'jquery.extras'],
   plugins: [
-    buble()
+    buble({
+      transforms: {
+        dangerousForOf: true
+      }
+    })
   ]
 };

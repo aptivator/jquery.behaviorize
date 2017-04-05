@@ -120,5 +120,14 @@ describe('jquery.behaviorize :: validify', function() {
       expect($('label:first + div').hasClass('$v-error-number')).to.be.true;
       expect($('label:last + div').hasClass('$v-error-deps')).to.be.true;
     });
+    
+    it('removes error classes when validation passes', done => {
+      $('input:first').val('1234').trigger('keyup');
+      setTimeout(() => {
+        expect($('input').hasClass('el-err')).to.be.false;
+        done();
+      }, 20);
+    });
   });
 });
+

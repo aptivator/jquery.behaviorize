@@ -9,8 +9,8 @@ import {$eventBus} from '../lib/vars';
 export default function() {
   let {classes} = validifyConfigs;
   let {vars} = this;
-  let {$el, $elContainer, $deps, $errorContainer, validationsTable} = vars;
-  let {depNames, elValidators, pfx, elChangeHandle} = vars;
+  let {$el, $mainEl, $elContainer, $deps, $errorContainer} = vars;
+  let {depNames, elValidators, pfx, elChangeHandle, validationsTable} = vars;
   let {elementValidators} = vars;
 
   _.each(elValidators, (configs, validatorName) => {
@@ -40,11 +40,11 @@ export default function() {
         .appendTo($errorContainer);
     }
     
+    let isDep = validatorName === 'deps';
+    
     let elementValidator = evt => {
       let classOp = 'addClass';
       let depValues = $deps.val('name', true);
-      let isDep = validatorName === 'deps';
-      
       let result = validator({
         $el, name, configs, $deps, value: $el.val(),
         depNames, depValues, validifyConfigs
@@ -79,6 +79,8 @@ export default function() {
       }
       
       $el[classOp](specificErrorClass);
+      
+      $mainEl[classOp](specificErrorClass);
       
       if($errorContainer.length) {
         $errorContainer[classOp](specificErrorClass);

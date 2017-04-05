@@ -12,7 +12,7 @@ export default function() {
   let {$el, $elContainer, $deps, $errorContainer, validationsTable} = vars;
   let {depNames, elValidators, pfx, elChangeHandle} = vars;
   let {elementValidators} = vars;
-  
+
   _.each(elValidators, (configs, validatorName) => {
     validatorName = validatorName.replace(pfx, '');
     configs = configsTransformer(configs);
@@ -44,6 +44,7 @@ export default function() {
       let classOp = 'addClass';
       let depValues = $deps.val('name', true);
       let isDep = validatorName === 'deps';
+      
       let result = validator({
         $el, name, configs, $deps, value: $el.val(),
         depNames, depValues, validifyConfigs

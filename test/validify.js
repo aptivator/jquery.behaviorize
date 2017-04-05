@@ -1,5 +1,4 @@
 let {expect} = require('chai');
-let _ = require('lodash');
 let jsdom = require('jsdom');
 let path = require('path');
 
@@ -19,6 +18,9 @@ describe('jquery.behaviorize :: validify', function() {
           <label>
             <input type = "text" name = "age" $v-number />
           </label>
+          <label>
+            <input type = "text" name = "name" $v-deps = '{selector: "input:first", disable: true}' />
+          </label>
         </form>
       </body>`,
       [lodashPath, jqueryPath, extrasPath, behaviorizePath],
@@ -27,8 +29,8 @@ describe('jquery.behaviorize :: validify', function() {
           console.error(err);
         }
         
-        window.console.log = console.log.bind(console);
-        
+        window.console = console;
+        window.onerror = e => console.log(e);
         ({$} = window);
         
         $.behaviorize({
@@ -62,7 +64,7 @@ describe('jquery.behaviorize :: validify', function() {
               errorSibling: 'label'
             },
             
-            validateOnStart: false,
+            validateOnStart: true,
             
             validateAll: true
           },
@@ -71,7 +73,6 @@ describe('jquery.behaviorize :: validify', function() {
             number: {
               validator(p) {
                 let value  = p.$el.val();
-                console.log('validator triggered', value, /\d+/.test(value));
                 return /\d+/.test(value);
               },
               
@@ -84,15 +85,40 @@ describe('jquery.behaviorize :: validify', function() {
         });
         
         $('body').behaviorize();
-        
-        done();
+        setTimeout(() => done(), 100);
       }
     );
   });
   
   describe('validify()', () => {
-    it('validates', () => {
-      expect(1).to.be.ok;
+    it('assigns unique ids to marked elements', () => {
+      expect($('input:first').id()).to.match(/^jquery-extras-id/);
+      expect($('input:eq(1)').id()).to.match(/^jquery-extras-id/);
+    });
+    
+    it('auto assigns classes to marked elements', () => {
+      let ids = $('input').attr('id');
+      ids.forEach(id => {
+        expect($(`#${id}`).hasClass(`$v-${id}`)).to.be.true;
+      });
+    });
+    
+    it('auto assigns classes to element container', () => {
+      let id = $('input:first').id();
+      expect($('label:first').hasClass(`$v-${id}`)).to.be.true;
+    });
+    
+    it('auto assigns classes to error container', () => {
+      let $input = $('input:first');
+      let id = $input.id();
+      expect($('label + div').hasClass(`$v-${id}`)).to.be.true;
+    });
+    
+    it('auto assigns specific validator error class to element', () => {
+      expect($('input:first').hasClass('$v-error-number')).to.be.true;
+      expect($('input:last').hasClass('$v-error-deps')).to.be.true;
+      expect($('label:first + div').hasClass('$v-error-number')).to.be.true;
+      expect($('label:last + div').hasClass('$v-error-deps')).to.be.true;
     });
   });
 });

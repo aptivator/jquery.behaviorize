@@ -1,13 +1,13 @@
 const validators = {
   deps: {
     validator(p) {
-      let {$deps, validationConfigs} = p;
-      let {error} = validationConfigs.classes.element;
+      let {$deps, validifyConfigs} = p;
+      let {error} = validifyConfigs.classes.element;
       return !$deps.hasClass(error);
     },
     
     notifier(p) {
-      return `${p.name} depends on ${p.dependencyNames.join(', ')}`;
+      return `${p.name} depends on ${p.depNames.join(', ')}`;
     }
   }
 };

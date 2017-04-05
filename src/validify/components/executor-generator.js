@@ -5,7 +5,7 @@ import {$eventBus} from '../lib/vars';
 
 export default function() {
   let {validateAll} = validifyConfigs;
-  let {elementValidators, elementHandle, id, mainHandle} = this.vars;
+  let {elementValidators, elHandle, id, mainHandle} = this.vars;
   
   this.executor = _.debounce(() => {
     let valid = true;
@@ -14,8 +14,8 @@ export default function() {
         break;
       }
     }
-    
-    $eventBus.trigger(elementHandle);
+
+    $eventBus.trigger(elHandle);
     $eventBus.trigger(mainHandle, [id, valid]);
   });
   

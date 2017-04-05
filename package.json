@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "npm test && run-when-changed --watch \"dist/behaviorize.js\" --watch \"test/validify.js\" --exec \"npm test\"",
-    "dev": "rollup -c -w & npm run watch",
+    "dev": "npm run watch & rollup -c -w",
     "dist": "rollup -c && uglifyjs ./dist/behaviorize.js --mangle --compress -o ./dist/behaviorize.min.js",
     "test": "mocha ./test/validify.js"
   },
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/aptivator/jquery.behaviorize#readme",
   "dependencies": {
     "jquery": "^3.2.1",
-    "jquery.extras": "^1.0.8",
+    "jquery.extras": "^1.2.3",
     "lodash": "^4.17.4"
   },
   "devDependencies": {

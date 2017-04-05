@@ -21,6 +21,6 @@ export default function() {
       $mainEl.removeClass(classes.mainContainer.default);
     });
   }
-  
+
   return this;
 }

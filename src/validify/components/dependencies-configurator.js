@@ -11,10 +11,6 @@ export default function() {
   let depHash = joiner(pfx, 'deps');
   let depConfigs = elValidators[depHash];
   
-  if(!depConfigs) {
-    return this;
-  }
-  
   depConfigs = configsTransformer(depConfigs);
   let $deps = dependenciesGetter(depConfigs, $el, $mainEl);
   let depNames = [];
@@ -44,7 +40,7 @@ export default function() {
     depNames.push(varToName(name));
   });    
   
-  _.extend(this.vars, {depNames});
+  _.extend(this.vars, {$deps, depNames});
   
   return this;
 }

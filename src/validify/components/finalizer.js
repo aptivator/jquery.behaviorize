@@ -9,7 +9,7 @@ export default function() {
   let {errorSibling} = selectors;
   let {$el, $errorContainer, $mainEl} = this.vars;
   let $errorSibling = errorSibling ? $el.closest(errorSibling) : $el;
-  
+
   $el.on(eventAssessor($el), executor);
   
   if($errorContainer.length) {

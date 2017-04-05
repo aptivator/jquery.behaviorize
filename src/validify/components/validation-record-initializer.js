@@ -8,6 +8,6 @@ export default function() {
   }
   
   validationTable[mainId][id] = false;
-  
+
   return this;
 }

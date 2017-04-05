@@ -17,6 +17,7 @@ export default function($el, pfx, elValidators) {
   _.extend(this.vars = {}, {
     elementValidators: [], 
     $el, 
+    $mainEl,
     id, 
     mainId, 
     pfx, 

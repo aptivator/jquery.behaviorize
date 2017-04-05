@@ -14,6 +14,7 @@ export default function($el, pfx) {
     .validationRecordInitializer()
     .containerListenerRegistrar()
     .DOMConfigurator()
+    .elementChangeListenerRegistrar()
     .validatorsSetter()
     .finalizer();
 }

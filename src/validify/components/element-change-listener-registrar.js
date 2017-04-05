@@ -29,4 +29,6 @@ export default function() {
     $errorContainer.addClass(classes.errorContainer.error);
     $errorContainer.removeClass(classes.errorContainer.default);
   });
+  
+  return this;
 }

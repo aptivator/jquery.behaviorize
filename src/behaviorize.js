@@ -1,8 +1,10 @@
-import                'jquery.extras';
-import $         from 'jquery';
-import                './behaviorize/behaviorize';
-import actionify from './actionify/actionify';
-import validify  from './validify/validify';
+import                 'jquery.extras';
+import $          from 'jquery';
+import                 './config/config';
+import joiner     from './lib/joiner';
+import actionify  from './actionify/actionify';
+import Validifier from './validify/validify';
+
 import {prefix}  from './lib/vars/vars';
 
 $.fn.behaviorize = function(configs, $set = $()) {
@@ -16,8 +18,8 @@ $.fn.behaviorize = function(configs, $set = $()) {
     $('*', this).byAttrName(pfx).each(function() {
       let $el = $(this);
       $set = $set.add($el);
-      actionify($el, `${pfx}a-`);
-      //validify($el, `${pfx}v-`);
+      actionify($el, joiner(pfx, 'a-'));
+      new Validifier($el, joiner(pfx, 'v-'));
     });
   });
   

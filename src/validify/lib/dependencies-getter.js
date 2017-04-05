@@ -1,10 +1,10 @@
 import $ from 'jquery';
 import _ from 'lodash';
 
-export default (depConfigs, $element, $mainContainer) => {
-  if(!_.isObject(depConfigs)) {
+export default (depConfigs, $el, $container) => {
+  if(!_.isPlainObject(depConfigs)) {
     depConfigs = {selector: depConfigs};
   }
   
-  return $(depConfigs.selector, $mainContainer).not($element);
+  return $(depConfigs.selector, $container).not($el);
 };

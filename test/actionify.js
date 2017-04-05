@@ -7,7 +7,6 @@ let jqueryPath = path.resolve(__dirname, '../node_modules/jquery/dist/jquery.js'
 let extrasPath = path.resolve(__dirname, '../node_modules/jquery.extras/dist/extras.js');
 let lodashPath = path.resolve(__dirname, '../node_modules/lodash/lodash.js');
 let behaviorizePath = path.resolve(__dirname, '../dist/behaviorize.js');
-
 let $;
 
 describe('jquery.behaviorize :: actionify', function() {
@@ -16,12 +15,16 @@ describe('jquery.behaviorize :: actionify', function() {
   before(done => {
     jsdom.env(
       `<body>
-        <input type = "text" _a-invoke = "{class name: red}" />
-        <input type = "text" _v-deps />
-        <input type = "text" />
+        <form>
+          <input type = "text" _a-invoke = "{class name: red}" />
+          <input type = "text" _v-deps />
+          <input type = "text" />
+        </form>
       </body>`,
       [lodashPath, jqueryPath, extrasPath, behaviorizePath],
       (err, window) => {
+        window.console.log = console.log;
+        
         if(err) {
           console.error(err);
         }

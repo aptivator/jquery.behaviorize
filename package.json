@@ -6,10 +6,10 @@
   "jsnext:main": "dist/behaviorize.es.js",
   "scripts": {
     "build": "rollup -c",
-    "watch": "npm test && run-when-changed --watch \"dist/behaviorize.js\" --watch \"test/**.js\" --exec \"npm test\"",
-    "dev": "npm run watch & rollup -c -w",
+    "watch": "npm test && run-when-changed --watch \"dist/behaviorize.js\" --watch \"test/validify.js\" --exec \"npm test\"",
+    "dev": "rollup -c -w & npm run watch",
     "dist": "rollup -c && uglifyjs ./dist/behaviorize.js --mangle --compress -o ./dist/behaviorize.min.js",
-    "test": "mocha ./test/actionify.js"
+    "test": "mocha ./test/validify.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/aptivator/jquery.behaviorize#readme",
   "dependencies": {
     "jquery": "^3.2.1",
-    "jquery.extras": "^1.0.7",
+    "jquery.extras": "^1.0.8",
     "lodash": "^4.17.4"
   },
   "devDependencies": {

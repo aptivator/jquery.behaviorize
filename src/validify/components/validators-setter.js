@@ -1,13 +1,13 @@
 import _                  from 'lodash';
 import configsTransformer from '../../lib/configs-transformer';
 import joiner             from '../../lib/joiner';
+import classer            from '../lib/classer';
 import varToName          from '../lib/var-to-name';
 
 import {validifyConfigs, validators} from '../../lib/vars/vars';
 import {$eventBus} from '../lib/vars';
 
 export default function() {
-  let {classes} = validifyConfigs;
   let {vars} = this;
   let {$el, $mainEl, $elContainer, $deps, $errorContainer} = vars;
   let {depNames, elValidators, pfx, elChangeHandle, validationsTable} = vars;
@@ -32,10 +32,8 @@ export default function() {
     
     if(errorMessage) {
       var $errorMessage = $('<div/>');
-      
-      $errorMessage
+      classer($errorMessage, 'errorMessage', true)
         .text(errorMessage)
-        .addClass(classes.errorMessage.error)
         .addClass(specificErrorClass)
         .appendTo($errorContainer);
     }
@@ -55,13 +53,8 @@ export default function() {
           $el.disable();
         }
         
-        if(errorMessage) {
-          $errorMessage.removeClass(classes.errorMessage.default);
-          $errorMessage.addClass(classes.errorMessage.error);
-        }
-        
-        $el.removeClass(classes.element.default);
-        $el.addClass(classes.element.error);
+        classer($errorMessage, 'errorMessage', true);
+        classer($el, 'element', true);
       } else {
         classOp = 'removeClass';
         
@@ -69,17 +62,11 @@ export default function() {
           $el.enable();
         }
         
-        if(errorMessage) {
-          $errorMessage.removeClass(classes.errorMessage.error);
-          $errorMessage.addClass(classes.errorMessage.default);
-        }
-        
-        $el.removeClass(classes.element.error);
-        $el.addClass(classes.element.default);
+        classer($errorMessage, 'errorMessage');
+        classer($el, 'element');
       }
       
       $el[classOp](specificErrorClass);
-      
       $mainEl[classOp](specificErrorClass);
       
       if($errorContainer.length) {

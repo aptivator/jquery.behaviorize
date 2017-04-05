@@ -1,11 +1,11 @@
-import _ from 'lodash';
+import _       from 'lodash';
+import classer from '../lib/classer';
 
-import {validifyConfigs} from '../../lib/vars/vars';
 import {$eventBus, validationTable} from '../lib/vars';
 
 export default function() {
   let {$mainEl, mainId, mainHandle} = this.vars;
-  let {classes} = validifyConfigs;
+  let classHash = 'mainContainer';
   
   if(!$eventBus.hasEvent(mainHandle)) {
     $eventBus.on(mainHandle, (evt, id, valid) => {
@@ -13,12 +13,10 @@ export default function() {
       let numberValid = _.reduce(validationTable[mainId], (sum, valid) => sum += valid);
       let totalInputs = _.keys(validationTable[mainId]).length;
       if(numberValid === totalInputs) {
-        $mainEl.addClass(classes.mainContainer.default);
-        return $mainEl.removeClass(classes.mainContainer.error);
+        return classer($mainEl, classHash);
       }
       
-      $mainEl.addClass(classes.mainContainer.error);
-      $mainEl.removeClass(classes.mainContainer.default);
+      classer($mainEl, classHash, true);
     });
   }
 

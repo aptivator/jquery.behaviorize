@@ -1,22 +1,17 @@
-import _ from 'lodash';
+import _       from 'lodash';
+import classer from '../lib/classer';
 
 import {validifyConfigs} from '../../lib/vars/vars';
 
 export default function() {
   let {$el, elHandle} = this.vars;
-  let {classes, selectors} = validifyConfigs;
-  let {elementContainer} = selectors;
+  let {elementContainer} = validifyConfigs.selectors;
   let $elContainer = elementContainer ? $el.closest(elementContainer) : null;
   let $errorContainer = $('<div/>');
   
-  $el.addClass(classes.element.error).addClass(elHandle);
-  $errorContainer.addClass(classes.errorContainer.error);
-  $errorContainer.addClass(elHandle);
-  
-  if($elContainer) {
-    $elContainer.addClass(elHandle);
-    $elContainer.addClass(classes.elementContainer.error);
-  }
+  classer($el, 'element', true).addClass(elHandle);
+  classer($errorContainer, 'errorContainer', true).addClass(elHandle);
+  classer($elContainer, 'elementContainer', true).addClass(elHandle);
   
   _.extend(this.vars, {$elContainer, $errorContainer});
   

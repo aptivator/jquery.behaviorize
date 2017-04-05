@@ -9,7 +9,7 @@ import {$eventBus} from '../lib/vars';
 
 export default function() {
   let {vars} = this;
-  let {$el, $mainEl, $elContainer, $deps, $errorContainer} = vars;
+  let {$el, $mainEl, $elContainer = $(), $deps, $errorContainer} = vars;
   let {depNames, elValidators, pfx, elChangeHandle, validationsTable} = vars;
   let {elementValidators} = vars;
 
@@ -29,10 +29,10 @@ export default function() {
     
     let {notifier = _.noop, validator} = definition;
     let errorMessage = !silent && notifier(notifierParams);
+    let $errorMessage = $();
     
     if(errorMessage) {
-      var $errorMessage = $('<div/>');
-      classer($errorMessage, 'errorMessage', true)
+      classer($errorMessage = $('<div/>'), 'errorMessage', true)
         .text(errorMessage)
         .addClass(specificErrorClass)
         .appendTo($errorContainer);
@@ -68,18 +68,9 @@ export default function() {
       
       $el[classOp](specificErrorClass);
       $mainEl[classOp](specificErrorClass);
-      
-      if($errorContainer.length) {
-        $errorContainer[classOp](specificErrorClass);
-      }
-      
-      if(errorMessage) {
-        $errorMessage[classOp](specificErrorClass);
-      }
-
-      if($elContainer) {
-        $elContainer[classOp](specificErrorClass);
-      }
+      $errorContainer[classOp](specificErrorClass);
+      $errorMessage[classOp](specificErrorClass);
+      $elContainer[classOp](specificErrorClass);
       
       $eventBus.trigger(elChangeHandle, [validatorName, result]);
       

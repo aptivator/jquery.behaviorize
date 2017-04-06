@@ -1,8 +1,7 @@
 import                 'jquery.extras';
 import $          from 'jquery';
 import _          from 'lodash';
-import                 './config/config';
-import                 './events/special';
+import                 './behaviorize/behaviorize';
 import joiner     from './lib/joiner';
 import actionify  from './actionify/actionify';
 import Validifier from './validify/validify';

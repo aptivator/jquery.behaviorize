@@ -1,3 +1,5 @@
+import './events/special';
+
 import _                              from 'lodash';
 import constructor                    from './components/constructor';
 import initializer                    from './components/initializer';

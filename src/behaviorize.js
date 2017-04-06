@@ -2,6 +2,7 @@ import                 'jquery.extras';
 import $          from 'jquery';
 import _          from 'lodash';
 import                 './config/config';
+import                 './events/special';
 import joiner     from './lib/joiner';
 import actionify  from './actionify/actionify';
 import Validifier from './validify/validify';
@@ -14,12 +15,12 @@ $.fn.behaviorize = function(configs, $set = $()) {
   if(configs) {
     $.behaviorize(configs);
   }
-  
+
   this.each(function() {
     $('*', this).byAttrName(pfx).each((idx, el) => {
       let $el = $(el);
       
-      if(el.behaviorized) {
+      if(el.actionified || el.validified) {
         return;
       }
       
@@ -37,7 +38,6 @@ $.fn.behaviorize = function(configs, $set = $()) {
       }
       
       if(el.actionified || el.validified) {
-        el.behavioried = true;
         $set = $set.add($el);
       }
     });

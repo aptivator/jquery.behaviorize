@@ -10,7 +10,7 @@ let $;
 
 describe('jquery.behaviorize :: validify', function() {
   this.timeout(10000);
-  
+
   before(done => {
     jsdom.env(
       `<body>
@@ -85,7 +85,6 @@ describe('jquery.behaviorize :: validify', function() {
           }
         });
 
-        $('body').behaviorize();
         $('body').behaviorize();
         setTimeout(() => {
           done();

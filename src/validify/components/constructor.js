@@ -3,6 +3,7 @@ export default function($el, pfx, validators) {
   
   this
     .initializer($el, pfx, validators)
+    .eventHandlersUnwinder()
     .executorGenerator()
     .dependenciesConfigurator()
     .validationRecordInitializer()

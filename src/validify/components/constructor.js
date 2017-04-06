@@ -2,13 +2,10 @@ import _ from 'lodash';
 
 export default function($el, pfx) {
   let elValidators = $el.attrValues(pfx);
-  let [el] = $el;
 
-  if(_.isEmpty(elValidators) || el.validified) {
+  if(_.isEmpty(elValidators)) {
     return;
   }
-
-  el.validified = true;
 
   this
     .initializer($el, pfx, elValidators)

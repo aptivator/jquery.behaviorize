@@ -17,6 +17,13 @@ $.fn.behaviorize = function(configs, $set = $()) {
   this.each(function() {
     $('*', this).byAttrName(pfx).each(function() {
       let $el = $(this);
+      let [el] = $el;
+      
+      if(el.behaviorized) {
+        return;
+      }
+      
+      el.behaviorized = true;
       $set = $set.add($el);
       actionify($el, joiner(pfx, 'a-'));
       new Validifier($el, joiner(pfx, 'v-'));

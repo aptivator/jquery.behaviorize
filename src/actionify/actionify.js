@@ -3,14 +3,6 @@ import configsTransformer from '../lib/configs-transformer';
 import {actions}          from '../lib/vars/vars';
 
 export default ($el, pfx) => {
-  let [el] = $el;
-  
-  if(el.actionified) {
-    return;
-  }
-  
-  el.actionified = true;
-  
   _.each($el.attrValues(pfx), (configs, actionName) => {
     actionName = actionName.replace(pfx, '');
     let {[actionName]: actionRecord} = actions;

@@ -9,7 +9,7 @@ import {$eventBus} from '../lib/vars';
 
 export default function() {
   let {vars} = this;
-  let {$el, $mainEl, $elContainer = $(), $deps, $errorContainer} = vars;
+  let {$el, $elContainer = $(), $deps, $errorContainer} = vars;
   let {depNames, elValidators, pfx, elChangeHandle, validationsTable} = vars;
   let {elementValidators} = vars;
 
@@ -66,12 +66,10 @@ export default function() {
         classer($el, 'element');
       }
       
-      $el[classOp](specificErrorClass);
-      $mainEl[classOp](specificErrorClass);
-      $errorContainer[classOp](specificErrorClass);
-      $errorMessage[classOp](specificErrorClass);
-      $elContainer[classOp](specificErrorClass);
-      
+      [$el, $errorContainer, $errorMessage, $elContainer].forEach($el => {
+        $el[classOp](specificErrorClass);
+      });
+
       $eventBus.trigger(elChangeHandle, [validatorName, result]);
       
       return result;

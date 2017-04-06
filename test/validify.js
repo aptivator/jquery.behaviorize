@@ -16,10 +16,10 @@ describe('jquery.behaviorize :: validify', function() {
       `<body>
         <form>
           <label>
-            <input type = "text" name = "age" $v-number />
+            <input type = "text" name = "age" v-number />
           </label>
           <label>
-            <input type = "text" name = "name" $v-deps = '{selector: "input:first", disable: true}' />
+            <input type = "text" name = "name" v-deps = '{selector: "input:first", disable: true}' />
           </label>
         </form>
       </body>`,
@@ -34,6 +34,7 @@ describe('jquery.behaviorize :: validify', function() {
         ({$} = window);
         
         $.behaviorize({
+          prefix: '',
           validifyConfigs: {
             classes: {
               mainContainer: {
@@ -83,9 +84,12 @@ describe('jquery.behaviorize :: validify', function() {
             }
           }
         });
-        
+
         $('body').behaviorize();
-        setTimeout(() => done(), 100);
+        $('body').behaviorize();
+        setTimeout(() => {
+          done();
+        }, 100);
       }
     );
   });
@@ -99,26 +103,26 @@ describe('jquery.behaviorize :: validify', function() {
     it('auto assigns classes to marked elements', () => {
       let ids = $('input').attr('id');
       ids.forEach(id => {
-        expect($(`#${id}`).hasClass(`$v-${id}`)).to.be.true;
+        expect($(`#${id}`).hasClass(`v-${id}`)).to.be.true;
       });
     });
     
     it('auto assigns classes to element container', () => {
       let id = $('input:first').id();
-      expect($('label:first').hasClass(`$v-${id}`)).to.be.true;
+      expect($('label:first').hasClass(`v-${id}`)).to.be.true;
     });
     
     it('auto assigns classes to error container', () => {
       let $input = $('input:first');
       let id = $input.id();
-      expect($('label + div').hasClass(`$v-${id}`)).to.be.true;
+      expect($('label + div').hasClass(`v-${id}`)).to.be.true;
     });
     
     it('auto assigns specific validator error class to element', () => {
-      expect($('input:first').hasClass('$v-error-number')).to.be.true;
-      expect($('input:last').hasClass('$v-error-deps')).to.be.true;
-      expect($('label:first + div').hasClass('$v-error-number')).to.be.true;
-      expect($('label:last + div').hasClass('$v-error-deps')).to.be.true;
+      expect($('input:first').hasClass('v-error-number')).to.be.true;
+      expect($('input:last').hasClass('v-error-deps')).to.be.true;
+      expect($('label:first + div').hasClass('v-error-number')).to.be.true;
+      expect($('label:last + div').hasClass('v-error-deps')).to.be.true;
     });
     
     it('removes error classes when validation passes', done => {

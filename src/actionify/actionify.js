@@ -2,8 +2,10 @@ import _                  from 'lodash';
 import configsTransformer from '../lib/configs-transformer';
 import {actions}          from '../lib/vars/vars';
 
-export default ($el, pfx) => {
-  _.each($el.attrValues(pfx), (configs, actionName) => {
+export default ($el, pfx, actions_) => {
+  $el.get(0).actionified = true;
+  
+  _.each(actions_, (configs, actionName) => {
     actionName = actionName.replace(pfx, '');
     let {[actionName]: actionRecord} = actions;
     

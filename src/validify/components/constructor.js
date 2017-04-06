@@ -1,14 +1,8 @@
-import _ from 'lodash';
-
-export default function($el, pfx) {
-  let elValidators = $el.attrValues(pfx);
-
-  if(_.isEmpty(elValidators)) {
-    return;
-  }
-
+export default function($el, pfx, validators) {
+  $el.get(0).validified = true;
+  
   this
-    .initializer($el, pfx, elValidators)
+    .initializer($el, pfx, validators)
     .executorGenerator()
     .dependenciesConfigurator()
     .validationRecordInitializer()

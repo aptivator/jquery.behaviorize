@@ -1,5 +1,6 @@
 import                 'jquery.extras';
 import $          from 'jquery';
+import _          from 'lodash';
 import                 './config/config';
 import joiner     from './lib/joiner';
 import actionify  from './actionify/actionify';
@@ -15,18 +16,30 @@ $.fn.behaviorize = function(configs, $set = $()) {
   }
   
   this.each(function() {
-    $('*', this).byAttrName(pfx).each(function() {
-      let $el = $(this);
-      let [el] = $el;
+    $('*', this).byAttrName(pfx).each((idx, el) => {
+      let $el = $(el);
       
       if(el.behaviorized) {
         return;
       }
       
-      el.behaviorized = true;
-      $set = $set.add($el);
-      actionify($el, joiner(pfx, 'a-'));
-      new Validifier($el, joiner(pfx, 'v-'));
+      let actionPfx = joiner(pfx, 'a-');
+      let validatorPfx = joiner(pfx, 'v-');
+      let actions = $el.attrValues(actionPfx);
+      let validators = $el.attrValues(validatorPfx);
+      
+      if(!_.isEmpty(actions)) {
+        actionify($el, actionPfx, actions);
+      }
+      
+      if(!_.isEmpty(validators)) {
+        new Validifier($el, validatorPfx, validators);
+      }
+      
+      if(el.actionified || el.validified) {
+        el.behavioried = true;
+        $set = $set.add($el);
+      }
     });
   });
   

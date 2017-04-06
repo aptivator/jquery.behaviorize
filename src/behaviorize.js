@@ -9,14 +9,14 @@ import Validifier from './validify/validify';
 
 import {prefix}  from './lib/vars/vars';
 
-$.fn.behaviorize = function(configs, $set = $()) {
+$.fn.behaviorize = function(configs) {
   let {prefix: pfx} = prefix;
   
   if(configs) {
     $.behaviorize(configs);
   }
 
-  this.each(function() {
+  return this.each(function() {
     $('*', this).byAttrName(pfx).each((idx, el) => {
       let $el = $(el);
       
@@ -36,12 +36,6 @@ $.fn.behaviorize = function(configs, $set = $()) {
       if(!_.isEmpty(validators)) {
         new Validifier($el, validatorPfx, validators);
       }
-      
-      if(el.actionified || el.validified) {
-        $set = $set.add($el);
-      }
     });
   });
-  
-  return $set;
 };

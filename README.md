@@ -18,12 +18,12 @@ link the supporting features into a developed software.
 
 The framework enables assigning the following behaviors to html elements:
 
-* <u>Transformations</u> - modifiers that are applied to an element once.
+* **Transformations** - modifiers that are applied to an element once.
 
-* <u>Actions</u> - behaviors invoked in response to a certain events triggered on 
+* **Actions** - behaviors invoked in response to a certain events triggered on 
   a compoment.
 
-* <u>Validations</u> - a specialized set of actions that assert whether a 
+* **Validations** - a specialized set of actions that assert whether a 
   user-provided data passes all of the specified checks.
 
 ### Mechanism of Operation

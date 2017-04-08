@@ -39,5 +39,5 @@ accomplished by calling `$.fn.behaviorize` on the container of the elements
 ### Tutorial and Documenation
 
 For more information and to get started with the framework, visit 
-[jQuery.Behaviorize Tutorial and Documentation](https://github.com/aptivator/jquery.behaviorize-tutorial) 
+[jQuery.behaviorize Tutorial and Documentation](https://github.com/aptivator/jquery.behaviorize-tutorial) 
 project.

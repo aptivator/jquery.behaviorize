@@ -1,4 +1,4 @@
-import './events/special';
+import './events/remove';
 
 import _                              from 'lodash';
 import constructor                    from './components/constructor';

@@ -6,10 +6,10 @@
   "jsnext:main": "dist/behaviorize.es.js",
   "scripts": {
     "build": "rollup -c",
-    "watch": "npm test && run-when-changed --watch \"dist/behaviorize.js\" --watch \"test/validify.js\" --exec \"npm test\"",
+    "watch": "npm test && run-when-changed --watch \"dist/behaviorize.js\" --watch \"test/tests/*.js\" --exec \"npm test\"",
     "dev": "npm run watch & rollup -c -w",
     "dist": "rollup -c && uglifyjs ./dist/behaviorize.js --mangle --compress -o ./dist/behaviorize.min.js",
-    "test": "mocha ./test/actionify.js"
+    "test": "mocha ./test/tests/*.js"
   },
   "repository": {
     "type": "git",

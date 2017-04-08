@@ -7,13 +7,13 @@ let lodash = path.resolve(basePath, 'lodash/lodash.js');
 let behaviorize = path.resolve(__dirname, '../../dist/behaviorize.js');
 let deps = [jquery, extras, lodash, behaviorize];
 
-module.exports = (html, callback) => {
+module.exports = async (html, callback) => {
   return new Promise((resolve, reject) => {
     jsdom.env(html, deps, (err, window) => {
       if(err) {
         reject(err);
       }
-      resolve(window.$);
+      resolve([window, window.$]);
     });
   });
 };

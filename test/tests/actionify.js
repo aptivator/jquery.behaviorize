@@ -2,14 +2,16 @@ let {expect} = require('chai');
 let _ = require('lodash');
 let sinon = require('sinon');
 let dom = require('../lib/dom');
+let html = '';
 let win;
 let $;
 
 describe('actions', function() {
   this.timeout(10000);
 
-  before(done => {
-
+  before(async done => {
+    [win, $] = await dom(html);
+    done();
   });
   
   after(() => win.close());

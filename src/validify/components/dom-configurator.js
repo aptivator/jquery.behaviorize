@@ -6,7 +6,7 @@ import {validifyConfigs} from '../../lib/vars/vars';
 export default function() {
   let {$el, elHandle} = this.vars;
   let {elementContainer} = validifyConfigs.selectors;
-  let $elContainer = elementContainer ? $el.closest(elementContainer) : null;
+  let $elContainer = elementContainer ? $el.closest(elementContainer) : undefined;
   let $errorContainer = $('<div/>');
   
   classer($el, 'element', true).addClass(elHandle);

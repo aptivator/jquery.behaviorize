@@ -9,10 +9,7 @@ let $;
 describe('actions', function() {
   this.timeout(10000);
 
-  before(async done => {
-    [win, $] = await dom(html);
-    done();
-  });
+  before(async () => [win, $] = await dom(html));
   
   after(() => win.close());
   

@@ -1,16 +1,29 @@
-import $         from 'jquery';
-import _         from 'lodash';
-import * as vars from '../lib/vars/vars';
+import $ from 'jquery';
+import _ from 'lodash';
 
-$.behaviorize = configs => {
-  _.each(configs, (configs, configName) => {
-    if(!_.isPlainObject(configs)) {
-      let configs_ = configs;
-      configs = {[configName]: configs_};
-    }
-    
-    _.extend(vars[configName], configs);
-  });
+import {prefix, actions, validators, validifyConfigs} from '../lib/vars/vars';
+
+$.behaviorize = (configs = {}) => {
+  let {prefix: prefix_, actions: actions_, validators: validators_} = configs;
+  let {validifyConfigs: validifyConfigs_} = configs;
   
-  return vars;
+  if(prefix_) {
+    _.extend(prefix, {prefix: prefix_});
+  }
+  
+  if(actions_) {
+    _.extend(actions, actions_);
+  }
+  
+  if(validators_) {
+    _.extend(validators, validators_);
+  }
+  
+  if(validifyConfigs_) {
+    _.each(validifyConfigs_, (configs, configName) => {
+     _.extend(validifyConfigs[configName], configs);
+    });
+  }
+  
+  return {prefix, actions, validators, validifyConfigs};
 };

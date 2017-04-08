@@ -18,13 +18,13 @@ link the supporting features into a developed software.
 
 The framework enables assigning the following behaviors to html elements:
 
-* **Transformations** - modifiers that are applied to an element once.
+* **Transformations** - modifiers that are applied to an element once
 
 * **Actions** - behaviors invoked in response to a certain events triggered on 
-  a compoment.
+  a compoment
 
 * **Validations** - a specialized set of actions that assert whether a 
-  user-provided data passes all of the specified checks.
+  user-provided data passes all of the specified checks
 
 ### Mechanism of Operation
 

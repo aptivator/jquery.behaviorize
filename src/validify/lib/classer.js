@@ -1,7 +1,7 @@
-import {validifyConfigs} from '../../lib/vars/vars';
+import {validationConfigs} from '../../lib/vars/vars';
 
 export default ($el = $(), classHash, err) => {
-  let {error, default: default_} = validifyConfigs.classes[classHash];
+  let {error, default: default_} = validationConfigs.classes[classHash];
   let classes = [error, default_];
   
   if(err) {

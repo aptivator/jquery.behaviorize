@@ -4,7 +4,7 @@ import joiner             from '../../lib/joiner';
 import classer            from '../lib/classer';
 import varToName          from '../lib/var-to-name';
 
-import {validifyConfigs, validators} from '../../lib/vars/vars';
+import {validationConfigs, validators} from '../../lib/vars/vars';
 import {$eventBus} from '../lib/vars';
 
 export default function() {
@@ -45,7 +45,7 @@ export default function() {
       let depValues = $deps.val('name', true);
       let result = validator({
         $el, name, configs, $deps, value: $el.val(),
-        depNames, depValues, validifyConfigs
+        depNames, depValues, validationConfigs
       });
       
       if(!result) {

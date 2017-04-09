@@ -1,8 +1,8 @@
 const validators = {
   deps: {
     validator(p) {
-      let {$deps, validifyConfigs} = p;
-      let {error} = validifyConfigs.classes.element;
+      let {$deps, validationConfigs} = p;
+      let {error} = validationConfigs.classes.element;
       return !$deps.hasClass(error);
     },
     

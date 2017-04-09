@@ -1,10 +1,10 @@
 import _ from 'lodash';
 
-import {validifyConfigs} from '../../lib/vars/vars';
+import {validationConfigs} from '../../lib/vars/vars';
 import {$eventBus} from '../lib/vars';
 
 export default function() {
-  let {validateAll} = validifyConfigs;
+  let {validateAll} = validationConfigs;
   let {elementValidators, elHandle, id, mainHandle} = this.vars;
   
   this.executor = _.debounce(() => {

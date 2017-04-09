@@ -16,7 +16,7 @@ $.fn.behaviorize = function(configs) {
   }
 
   return this.each(function() {
-    $('*', this).byAttrName(pfx).each((idx, el) => {
+    $('*', this).add(this).byAttrName(pfx).each((idx, el) => {
       let $el = $(el);
       
       if(el.actionified || el.validified) {

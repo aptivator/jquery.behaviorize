@@ -1,11 +1,11 @@
 import isForm        from '../lib/is-form';
 import eventAssessor from '../lib/event-assessor';
 
-import {validifyConfigs} from '../../lib/vars/vars';
+import {validationConfigs} from '../../lib/vars/vars';
 
 export default function() {
   let {executor} = this;
-  let {validateOnStart, selectors} = validifyConfigs;
+  let {validateOnStart, selectors} = validationConfigs;
   let {errorSibling} = selectors;
   let {$el, $errorContainer, $mainEl} = this.vars;
   let $errorSibling = errorSibling ? $el.closest(errorSibling) : $el;

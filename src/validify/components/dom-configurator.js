@@ -1,11 +1,11 @@
 import _       from 'lodash';
 import classer from '../lib/classer';
 
-import {validifyConfigs} from '../../lib/vars/vars';
+import {validationConfigs} from '../../lib/vars/vars';
 
 export default function() {
   let {$el, elHandle} = this.vars;
-  let {elementContainer} = validifyConfigs.selectors;
+  let {elementContainer} = validationConfigs.selectors;
   let $elContainer = elementContainer ? $el.closest(elementContainer) : undefined;
   let $errorContainer = $('<div/>');
   

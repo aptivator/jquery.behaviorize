@@ -1,11 +1,11 @@
 import $ from 'jquery';
 import _ from 'lodash';
 
-import {prefix, actions, validators, validifyConfigs} from '../lib/vars/vars';
+import {prefix, actions, validators, validationConfigs} from '../lib/vars/vars';
 
 $.behaviorize = (configs = {}) => {
   let {prefix: prefix_, actions: actions_, validators: validators_} = configs;
-  let {validifyConfigs: validifyConfigs_} = configs;
+  let {validationConfigs: validationConfigs_} = configs;
   
   if(prefix_) {
     _.extend(prefix, {prefix: prefix_});
@@ -19,11 +19,15 @@ $.behaviorize = (configs = {}) => {
     _.extend(validators, validators_);
   }
   
-  if(validifyConfigs_) {
-    _.each(validifyConfigs_, (configs, configName) => {
-     _.extend(validifyConfigs[configName], configs);
+  if(validationConfigs_) {
+    _.each(validationConfigs_, (configs, configName) => {
+      if(_.isPlainObject(configs)) {
+        _.extend(validationConfigs[configName], configs);
+      } else {
+        validationConfigs[configName] = configs;
+      }
     });
   }
   
-  return {prefix, actions, validators, validifyConfigs};
+  return {prefix, actions, validators, validationConfigs};
 };
